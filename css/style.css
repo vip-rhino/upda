@@ -1,0 +1,59 @@
+body {
+    font-family: 'Meiryo UI';
+}
+
+div.content {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div.button {
+    background-color: skyblue;
+    cursor: pointer;
+}
+
+div.button:hover {
+    font-weight: bold;
+}
+
+div#title {
+}
+
+div#title a {
+    text-decoration: none;
+    color: #000;
+}
+
+div#welkom {
+}
+
+div#choice {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: 2px dashed skyblue;
+}
+
+div#upload {
+    border: 2px solid skyblue;
+}
+
+div#list {
+}
+
+div#footer {
+}
+
+a.upload {
+    text-decoration: none;
+    color: #000;
+}
+
+table {
+    margin: 0 auto;
+}
+table tr td,
+table tr th {
+    padding-left: 10px;
+    white-space: nowrap;
+}
