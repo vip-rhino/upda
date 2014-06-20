@@ -88,7 +88,7 @@ if($handling->connect()) {
         </div>
         <div class="grid grid-pad">
             <div class="col-1-1">
-                <a class="upload" href="#" onclick="uploadAction();">
+                <a class="button" href="#" onclick="uploadAction();">
                     <div id="upload" class="content button">
                         うｐしてみるテスト
                     </div>

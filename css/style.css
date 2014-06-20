@@ -9,6 +9,7 @@ div.content {
 }
 
 div.button {
+    border: 2px solid skyblue;
     background-color: skyblue;
     cursor: pointer;
 }
@@ -34,8 +35,8 @@ div#choice {
     border: 2px dashed skyblue;
 }
 
-div#upload {
-    border: 2px solid skyblue;
+div#upload,
+div#view {
 }
 
 div#list {
@@ -44,7 +45,7 @@ div#list {
 div#footer {
 }
 
-a.upload {
+a.button {
     text-decoration: none;
     color: #000;
 }
