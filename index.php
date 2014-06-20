@@ -4,8 +4,28 @@ require_once ("./class/DataHandling.php");
 session_start();
 $_SESSION["ticket"] = md5(uniqid());
 $handling = new DataHandling();
-$dat = $handling->selectDat(array("from" => 0, "to" => 99));
-$handling->deconnect();
+$tableData = "";
+if($handling->connect()) {
+    try {
+        $dat = $handling->selectDat();
+        $handling->deconnect();
+        foreach ($dat as $row) {
+            if($row["file_name"] !== "") {
+                $filename = $row["file_name"].".".$row["file_ext"];
+            } else {
+                $filename = $row["file_name"];
+            }
+            $tableData .= "<tr><td><a href=\"#\" onclick=\"delAction(".$row["id"].",'".$filename."');\">[削除]</a></td><td><a href=\"./dat/".$filename."\" target=\"_blank\">".$filename."</a></td></tr>".PHP_EOL;
+        }
+        $tableData = "<table>".$tableData."</table>";
+        $handling->deconnect();
+    } catch (Exception $ex) {
+        $handling->deconnect();
+        error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
+    }
+} else {
+    $tableData = "DB接続に失敗しました。<br />";
+}
 ?>
 <html>
     <head>
@@ -77,33 +97,9 @@ $handling->deconnect();
         </div>
         <div class="grid grid-pad">
             <div class="col-1-1">
-                <div id="list" class="content">
-                    <table>
-<?php
-                        foreach ($dat as $row) {
-                            if($row["file_name"] !== "") {
-                                $filename = $row["file_name"].".".$row["file_ext"];
-                            } else {
-                                $filename = $row["file_name"];
-                            }
-                            echo "<tr><td><a href=\"#\" onclick=\"delAction(".$row["id"].",'".$filename."');\">[削除]</a></td><td><a href=\"./dat/".$filename."\">".$filename."</a></td></tr>".PHP_EOL;
-                        }
-?>
-                    </table>
-                </div>
+                <div id="list" class="content"><?php echo $tableData; ?></div>
             </div>
         </div>
-        <?php if(count($dat) > 0) { ?>
-        <!--div class="grid grid-pad">
-            <div class="col-1-1">
-                <a class="upload" href="#" onclick="viewAllAction();">
-                    <div id="upload" class="content button">
-                        うｐファイルをサムネ付きで全部見てみるテスト
-                    </div>
-                </a>
-            </div>
-        </div-->
-        <?php } ?>
         <form action="del.php" name="del" method="post">
             <input type="hidden" id="id" name="id">
             <input type="hidden" id="file" name="file">

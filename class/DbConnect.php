@@ -9,10 +9,9 @@ class DbConnect {
     private $PDO = NULL;
     
     public function __construct() {
-        $this->connect();
     }
     
-    protected function connect() {
+    public function connect() {
         $ret = FALSE;
         try {
             if(is_null($this->PDO)) {
@@ -21,7 +20,6 @@ class DbConnect {
             }
         } catch (Exception $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }
@@ -31,7 +29,6 @@ class DbConnect {
             $this->PDO = NULL;
         } catch (Exception $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
     }
     
@@ -40,7 +37,6 @@ class DbConnect {
             $ret = $this->PDO->beginTransaction();
         } catch (Exception $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }
@@ -50,7 +46,6 @@ class DbConnect {
             $ret = $this->PDO->rollBack();
         } catch (Exception $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }
@@ -60,7 +55,6 @@ class DbConnect {
             $ret = $this->PDO->commit();
         } catch (Exception $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }
@@ -72,7 +66,6 @@ class DbConnect {
             $ret = $sth->fetchAll();
         } catch (PDOException $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }
@@ -84,7 +77,6 @@ class DbConnect {
             $ret = $this->PDO->lastInsertId();
         } catch (PDOException $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }
@@ -95,7 +87,6 @@ class DbConnect {
             $ret = $sth->execute($params);
         } catch (PDOException $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }
@@ -106,7 +97,6 @@ class DbConnect {
             $ret = $sth->execute($params);
         } catch (PDOException $ex) {
             error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-            throw new Exception($ex);
         }
         return $ret;
     }

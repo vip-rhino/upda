@@ -7,18 +7,28 @@ $msg = "";
 $tableData = "";
 $file = filter_input(INPUT_POST, "file");
 $id = filter_input(INPUT_POST, "id");
-if($_SESSION["ticket"] !== filter_input(INPUT_POST, "ticket") || $id === "" || $file === "") {
-    $msg = "<a href=\"index.php\">とｐ</a>画面からやり直して下さい。";
+if($handling->connect()) {
+    try {
+        if($_SESSION["ticket"] !== filter_input(INPUT_POST, "ticket") || $id === "" || $file === "") {
+            $msg = "<a href=\"index.php\">とｐ</a>画面からやり直して下さい。";
+        } else {
+            $handling->deleteDat(array($id));
+            /* 削除フラグ利用時はこっち */
+            //$handling->updateDat(array($id));
+            unlink("./dat/".$file);
+            /* 削除じゃなくて移動はこっち */
+            //rename("./dat/".$file, "./trash/".$file);
+            $msg = $file."の削除が完了しました。";
+        }
+        $_SESSION['ticket'] = "";
+        $handling->deconnect();
+    } catch (Exception $ex) {
+        $handling->deconnect();
+        error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
+    }
 } else {
-    $handling->deleteDat(array($id));
-    /* 削除フラグ利用時はこっち */
-    //$handling->updateDat(array($id));
-    unlink("./dat/".$file);
-    /* 削除じゃなくて移動はこっち */
-    //rename("./dat/".$file, "./trash/".$file);
-    $msg = $file."の削除が完了しました。";
+    $msg = "DB接続に失敗しました。<br /><a href=\"index.php\">とｐ</a>画面からやり直して下さい。";
 }
-$_SESSION['ticket'] = "";
 ?>
 <html>
     <head>
