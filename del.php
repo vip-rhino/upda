@@ -1,34 +1,13 @@
 <!DOCTYPE html>
 <?php
-require_once ("./class/DataHandling.php");
-session_start();
-$handling = new DataHandling();
-$msg = "";
-$tableData = "";
-$file = filter_input(INPUT_POST, "file");
-$id = filter_input(INPUT_POST, "id");
-if($handling->connect()) {
-    try {
-        if($_SESSION["ticket"] !== filter_input(INPUT_POST, "ticket") || $id === "" || $file === "") {
-            $msg = "<a href=\"index.php\">とｐ</a>画面からやり直して下さい。";
-        } else {
-            $handling->deleteDat(array($id));
-            /* 削除フラグ利用時はこっち */
-            //$handling->updateDat(array($id));
-            unlink("./dat/".$file);
-            /* 削除じゃなくて移動はこっち */
-            //rename("./dat/".$file, "./trash/".$file);
-            $msg = $file."の削除が完了しました。";
-        }
-        $_SESSION['ticket'] = "";
-        $handling->deconnect();
-    } catch (Exception $ex) {
-        $handling->deconnect();
-        error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-    }
+require_once ("./class/Upda.php");
+$obj = new Upda();
+if($_SESSION["ticket"] !== filter_input(INPUT_POST, "ticket")) {
+    $msg = "<a href=\"index.php\">とｐ</a>画面からやり直して下さい。";
 } else {
-    $msg = "DB接続に失敗しました。<br /><a href=\"index.php\">とｐ</a>画面からやり直して下さい。";
+    $msg = $obj->del();
 }
+$_SESSION['ticket'] = "";
 ?>
 <html>
     <head>

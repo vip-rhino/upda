@@ -22,7 +22,7 @@ class DataHandling extends DbConnect {
         return $ret;
     }
     
-    public function selectDat($limitParam = array()) {
+    protected function selectDat($limitParam = array()) {
         try {
             $limit = $this->makeLimit($limitParam);
             $ret = parent::select(self::_SELECT_DAT.$limit);
@@ -33,7 +33,7 @@ class DataHandling extends DbConnect {
         return $ret;
     }
 
-    public function selectDatCount() {
+    protected function selectDatCount() {
         try {
             $ret = parent::select(self::_SELECT_DAT_COUNT);
         } catch (Exception $ex) {
@@ -43,7 +43,7 @@ class DataHandling extends DbConnect {
         return $ret[0][0];
     }
     
-    public function insertDat($param) {
+    protected function insertDat($param) {
         try {
             $ary = $this->makeInsertDatArgs($param);
             $ret = parent::insert(self::_INSERT_DAT, $ary);
@@ -68,7 +68,7 @@ class DataHandling extends DbConnect {
         return $ret;
     }
     
-    public function updateDat($param) {
+    protected function updateDat($param) {
         try {
             $ret = parent::update(self::_UPDATE_DAT, $param);
         } catch (Exception $ex) {
@@ -78,7 +78,7 @@ class DataHandling extends DbConnect {
         return $ret;
     }
     
-    public function deleteDat($param) {
+    protected function deleteDat($param) {
         try {
             $ret = parent::delete(self::_DELETE_DAT, $param);
         } catch (Exception $ex) {

@@ -1,31 +1,8 @@
 <!DOCTYPE html>
 <?php
-require_once ("./class/DataHandling.php");
-session_start();
+require_once ("./class/Upda.php");
 $_SESSION["ticket"] = md5(uniqid());
-$handling = new DataHandling();
-$tableData = "";
-if($handling->connect()) {
-    try {
-        $dat = $handling->selectDat();
-        $handling->deconnect();
-        foreach ($dat as $row) {
-            if($row["file_name"] !== "") {
-                $filename = $row["file_name"].".".$row["file_ext"];
-            } else {
-                $filename = $row["file_name"];
-            }
-            $tableData .= "<tr><td><a href=\"#\" onclick=\"delAction(".$row["id"].",'".$filename."');\">[削除]</a></td><td><a href=\"./dat/".$filename."\" target=\"_blank\">".$filename."</a></td></tr>".PHP_EOL;
-        }
-        $tableData = "<table>".$tableData."</table>";
-        $handling->deconnect();
-    } catch (Exception $ex) {
-        $handling->deconnect();
-        error_log($ex->getFile()."[".$ex->getLine()."]:::".$ex->getMessage());
-    }
-} else {
-    $tableData = "DB接続に失敗しました。<br />";
-}
+$obj = new Upda();
 ?>
 <html>
     <head>
@@ -34,31 +11,7 @@ if($handling->connect()) {
         <link rel="stylesheet" type="text/css" href="css/reset.css" />
         <link rel="stylesheet" type="text/css" href="css/simplegrid.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <script>
-            function uploadAction(){
-                var files = document.getElementById("files").files;
-                if(files.length === 0) {
-                    alert("アップロードするファイルを選択して下さい。");
-                    return false;
-                }
-                if(files.length > 5) {
-                    alert("一度にアップロード出来るファイル数は5ファイルまでです。");
-                    return false;
-                }
-                for (var i = 0; i < files.length; i++) {
-                    if(1048576 < files[i].size){
-                        alert("最大ファイルサイズは1MByte(1048576Byte)です。");
-                        return false;
-                    }
-                }
-                document.add.submit();
-            }
-            function delAction(id, file){
-                document.getElementById("id").value = id;
-                document.getElementById("file").value = file;
-                document.del.submit();
-            }
-        </script>
+        <script src="js/common.js"></script>
     </head>
     <body>
         <div class="grid grid-pad">
@@ -97,7 +50,7 @@ if($handling->connect()) {
         </div>
         <div class="grid grid-pad">
             <div class="col-1-1">
-                <div id="list" class="content"><?php echo $tableData; ?></div>
+                <div id="list" class="content"><?php echo $obj->getList(); ?></div>
             </div>
         </div>
         <form action="del.php" name="del" method="post">

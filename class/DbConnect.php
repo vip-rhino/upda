@@ -8,10 +8,7 @@ class DbConnect {
     
     private $PDO = NULL;
     
-    public function __construct() {
-    }
-    
-    public function connect() {
+    protected function connect() {
         $ret = FALSE;
         try {
             if(is_null($this->PDO)) {
@@ -24,7 +21,7 @@ class DbConnect {
         return $ret;
     }
     
-    public function deconnect() {
+    protected function deconnect() {
         try {
             $this->PDO = NULL;
         } catch (Exception $ex) {
